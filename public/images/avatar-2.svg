@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#00A3E0" stop-opacity="0.4" />
+      <stop offset="1" stop-color="#0066CC" stop-opacity="0.35" />
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="64" fill="url(#g)" />
+  <circle cx="128" cy="110" r="44" fill="#ffffff" fill-opacity="0.75" />
+  <rect x="64" y="162" width="128" height="64" rx="32" fill="#ffffff" fill-opacity="0.65" />
+  <text x="50%" y="55%" font-family="system-ui, sans-serif" font-size="34" text-anchor="middle" fill="#0f172a" fill-opacity="0.55">DK</text>
+</svg>

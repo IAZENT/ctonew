@@ -54,6 +54,49 @@ body::before {
   z-index: 0;
 }
 
+html {
+  color-scheme: light dark;
+}
+
+.theme-transition,
+.theme-transition * {
+  transition:
+    background-color 0.3s,
+    color 0.3s,
+    border-color 0.3s,
+    fill 0.3s,
+    stroke 0.3s,
+    box-shadow 0.3s;
+}
+
+@layer utilities {
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+
+  .animate-accordion-down {
+    animation: accordion-down 0.2s ease-out;
+  }
+
+  .animate-accordion-up {
+    animation: accordion-up 0.2s ease-out;
+  }
+}
+
 @layer components {
   .btn {
     @apply inline-flex items-center justify-center rounded-xl bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition hover:opacity-90;
