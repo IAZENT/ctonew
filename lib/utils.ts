@@ -1,13 +1,6 @@
-export function assertEnv(name: string): string {
-  const value = process.env[name]
-  if (!value) throw new Error(`Missing environment variable: ${name}`)
-  return value
-}
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
-export function slugify(input: string): string {
-  return input
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
 }
