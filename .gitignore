@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# next
+.next/
+out/
+
+# payload
+.payload/
+
+# prisma
+prisma/dev.db
+
+# logs
+*.log
+
+# env
+.env
+.env.*
+!.env.example
+
+# misc
+.DS_Store

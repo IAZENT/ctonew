@@ -1,0 +1,166 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum UserRole {
+  super_admin
+  admin
+  editor
+  contributor
+  viewer
+}
+
+enum ProductStatus {
+  draft
+  published
+  archived
+}
+
+enum PageStatus {
+  draft
+  published
+  archived
+}
+
+enum SubmissionStatus {
+  new
+  in_progress
+  resolved
+  spam
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  passwordHash String
+  firstName    String?
+  lastName     String?
+  role         UserRole  @default(viewer)
+  profileImage String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([role])
+}
+
+model Category {
+  id              String     @id @default(uuid())
+  categoryName    String
+  slug            String     @unique
+  description     String?
+  categoryImage   String?
+  icon            String?
+  displayOrder    Int        @default(0)
+  metaTitle       String?
+  metaDescription String?
+
+  parentCategoryId String?
+  parentCategory   Category?  @relation("CategoryToParent", fields: [parentCategoryId], references: [id])
+  children         Category[] @relation("CategoryToParent")
+
+  products Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id                 String        @id @default(uuid())
+  productName         String
+  modelNumber         String        @unique
+  slug                String        @unique
+  categoryId          String?
+  category            Category?     @relation(fields: [categoryId], references: [id])
+
+  coolingCapacity     Int?
+  coverageArea        Int?
+  energyRating        Float?
+  powerConsumption    Float?
+  noiseLevel          Float?
+  refrigerantType     String?
+
+  dimensions          String?
+  weight              Float?
+  voltage             Int?
+  frequency           Int?
+  warranty            String?
+
+  additionalFeatures  String?
+  customSpecs         Json?
+
+  price               Decimal       @db.Decimal(10, 2)
+  featured            Boolean       @default(false)
+  status              ProductStatus @default(draft)
+
+  primaryImage        String?
+  gallery             Json?
+  videos              Json?
+  resources           Json?
+  relatedProducts     Json?
+
+  metaTitle           String?
+  metaDescription     String?
+  seoKeywords         String?
+
+  publishedAt         DateTime?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+
+  @@index([modelNumber])
+  @@index([categoryId])
+  @@index([energyRating])
+  @@index([status])
+  @@index([slug])
+}
+
+model Page {
+  id              String     @id @default(uuid())
+  pageTitle       String
+  slug            String     @unique
+  template        String?
+  content         Json?
+
+  metaTitle       String?
+  metaDescription String?
+
+  status          PageStatus @default(draft)
+  publishedAt     DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@index([slug])
+  @@index([status])
+}
+
+model Settings {
+  id           Int     @id @default(1)
+  siteName     String
+  tagline      String?
+  logo         String?
+  themeColors  Json?
+  contactInfo  Json?
+  socialLinks  Json?
+  analytics    Json?
+
+  updatedAt DateTime @updatedAt
+}
+
+model FormSubmission {
+  id          String           @id @default(uuid())
+  formType    String
+  name        String
+  email       String
+  phone       String?
+  message     String
+  status      SubmissionStatus @default(new)
+  submittedAt DateTime         @default(now())
+
+  @@index([email])
+  @@index([status])
+}
